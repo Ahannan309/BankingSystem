@@ -1,4 +1,5 @@
-﻿using BankingSystem.Interfaces;
+﻿using BankingSystem.Data;
+using BankingSystem.Interfaces;
 using BankingSystem.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,7 +7,7 @@ namespace BankingSystem.Repository
 {
     public class TransactionRepository : GenericRepository<Transaction>, ITransactionRepository
     {
-        public TransactionRepository(DbContext context) : base(context)
+        public TransactionRepository(BankDBContext context) : base(context)
         {
         }
 

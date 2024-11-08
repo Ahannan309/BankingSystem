@@ -1,3 +1,4 @@
+using BankingSystem.DTO;
 using BankingSystem.Models;
 using BankingSystem.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ namespace BankingSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCustomer([FromBody] Customer customer)
+        public async Task<IActionResult> CreateCustomer(AddCustomerDTO customerDTO)
         {
 
             if (ModelState.IsValid)
@@ -25,7 +26,7 @@ namespace BankingSystem.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _genericService.AddAsync(customer);  
+            await _genericService.AddAsync(customerDTO);  
             return Ok("Customer Created Successfully");
         }
 

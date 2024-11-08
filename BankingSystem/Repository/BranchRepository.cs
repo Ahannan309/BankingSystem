@@ -1,4 +1,5 @@
-﻿using BankingSystem.Interfaces;
+﻿using BankingSystem.Data;
+using BankingSystem.Interfaces;
 using BankingSystem.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,7 +7,7 @@ namespace BankingSystem.Repository
 {
     public class BranchRepository : GenericRepository<Branch>, IBranchRepository
     {
-        public BranchRepository(DbContext context) : base(context)
+        public BranchRepository(BankDBContext context) : base(context)
         {
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using BankingSystem.Data;
 using BankingSystem.Interfaces;
 using BankingSystem.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,7 @@ namespace BankingSystem.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DbContext _context;
+        private readonly BankDBContext _context;
         private readonly IServiceProvider _serviceProvider; 
         private readonly Dictionary<Type, object> _repositories = new Dictionary<Type, object>();
 
@@ -19,7 +20,7 @@ namespace BankingSystem.UnitOfWork
 
 
        
-        public UnitOfWork (DbContext context,
+        public UnitOfWork (BankDBContext context,
             ICustomerRepository customer,
             IAccountRepository account,
             ITransactionRepository transaction,

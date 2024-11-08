@@ -1,4 +1,5 @@
 ﻿
+using BankingSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,10 @@ namespace BankingSystem.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        protected readonly DbContext _context;
+        protected readonly BankDBContext _context;
         protected readonly DbSet<T> _dbSet;
 
-        public GenericRepository(DbContext context)
+        public GenericRepository(BankDBContext context)
         {
             _context = context;
             _dbSet = _context.Set<T>();

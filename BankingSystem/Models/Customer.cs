@@ -26,6 +26,7 @@ namespace BankingSystem.Models
 
     public DateTime CreatedDate { get; set; } = DateTime.Now;
 
+
     public  ICollection<Account> Accounts { get; set; }
 
        

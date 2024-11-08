@@ -1,4 +1,5 @@
-﻿using BankingSystem.Interfaces;
+﻿using BankingSystem.Data;
+using BankingSystem.Interfaces;
 using BankingSystem.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,7 @@ namespace BankingSystem.Repository
     public class CustomerRepository : GenericRepository<Customer>, ICustomerRepository
     {
 
-        public CustomerRepository(DbContext context):base(context)
+        public CustomerRepository(BankDBContext context):base(context)
         {
             
         }
