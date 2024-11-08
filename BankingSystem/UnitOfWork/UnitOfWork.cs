@@ -8,6 +8,8 @@ namespace BankingSystem.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DbContext _context;
+        private readonly IServiceProvider _serviceProvider; 
+        private readonly Dictionary<Type, object> _repositories = new Dictionary<Type, object>();
 
         public ICustomerRepository Customers { get; }
         public IAccountRepository Accounts { get; }
@@ -22,7 +24,8 @@ namespace BankingSystem.UnitOfWork
             IAccountRepository account,
             ITransactionRepository transaction,
             ILoanRepository loan,
-            IBranchRepository branch)
+            IBranchRepository branch, 
+            IServiceProvider serviceProvider)
         {
             _context = context;
 
@@ -31,6 +34,8 @@ namespace BankingSystem.UnitOfWork
             Transactions = transaction;
             Loans = loan;
             Branches = branch;
+
+            _serviceProvider = serviceProvider;
         }
 
 
@@ -44,5 +49,19 @@ namespace BankingSystem.UnitOfWork
         {
             _context.Dispose();
         }
+
+        public IGenericRepository<T> GetGenericRepositroy<T>() where T : class
+        {
+            if (_repositories.ContainsKey(typeof(T)))
+            {
+                return (IGenericRepository<T>)_repositories[typeof(T)];
+            }
+
+            var repository = _serviceProvider.GetService<IGenericRepository<T>>();
+            _repositories[typeof(T)] = repository;
+            return repository;
+        }
+
+            
     }
 }

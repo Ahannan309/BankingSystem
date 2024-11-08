@@ -9,7 +9,7 @@ namespace BankingSystem.Models
 
     [Required]
     [StringLength(100)]
-    public string Name { get; set; }
+    public string CName { get; set; }
 
     [Required]
     [EmailAddress]

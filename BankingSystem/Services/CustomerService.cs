@@ -25,7 +25,7 @@ public class CustomerService
 
         var customer = new Customer
         {
-            Name = name,
+            CName = name,
             Email = email,
             PhoneNumber = phoneNumber,
             Address = address

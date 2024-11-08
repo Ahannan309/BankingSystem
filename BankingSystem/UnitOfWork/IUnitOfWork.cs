@@ -17,7 +17,8 @@ namespace BankingSystem.UnitOfWork
 
 
         //for generic service
+        //IGenericRepository<T> GenericRepository<T>() where T : class;
 
-        //IGenericRepository<> GetGenericRepositroy<T>() where T : class;
+        IGenericRepository<T> GetGenericRepositroy<T>() where T : class;
     }
 }
