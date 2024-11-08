@@ -53,7 +53,7 @@ namespace BankingSystem.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Accounts", (string)null);
+                    b.ToTable("Accounts");
                 });
 
             modelBuilder.Entity("BankingSystem.Models.Branch", b =>
@@ -76,7 +76,7 @@ namespace BankingSystem.Migrations
 
                     b.HasKey("BranchId");
 
-                    b.ToTable("Branches", (string)null);
+                    b.ToTable("Branches");
                 });
 
             modelBuilder.Entity("BankingSystem.Models.Customer", b =>
@@ -92,7 +92,7 @@ namespace BankingSystem.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("varchar(200)");
 
-                    b.Property<int>("BranchId")
+                    b.Property<int?>("BranchId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
@@ -117,7 +117,7 @@ namespace BankingSystem.Migrations
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("BankingSystem.Models.Loan", b =>
@@ -147,7 +147,7 @@ namespace BankingSystem.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Loans", (string)null);
+                    b.ToTable("Loans");
                 });
 
             modelBuilder.Entity("BankingSystem.Models.Transaction", b =>
@@ -174,7 +174,7 @@ namespace BankingSystem.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.ToTable("Transactions", (string)null);
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("BankingSystem.Models.Account", b =>
@@ -198,13 +198,9 @@ namespace BankingSystem.Migrations
 
             modelBuilder.Entity("BankingSystem.Models.Customer", b =>
                 {
-                    b.HasOne("BankingSystem.Models.Branch", "Branch")
+                    b.HasOne("BankingSystem.Models.Branch", null)
                         .WithMany("Customers")
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
+                        .HasForeignKey("BranchId");
                 });
 
             modelBuilder.Entity("BankingSystem.Models.Loan", b =>

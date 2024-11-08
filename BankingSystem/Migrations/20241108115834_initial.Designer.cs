@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankingSystem.Migrations
 {
     [DbContext(typeof(BankDBContext))]
-    [Migration("20241105083657_initial")]
+    [Migration("20241108115834_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -95,7 +95,7 @@ namespace BankingSystem.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("varchar(200)");
 
-                    b.Property<int>("BranchId")
+                    b.Property<int?>("BranchId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
@@ -201,13 +201,9 @@ namespace BankingSystem.Migrations
 
             modelBuilder.Entity("BankingSystem.Models.Customer", b =>
                 {
-                    b.HasOne("BankingSystem.Models.Branch", "Branch")
+                    b.HasOne("BankingSystem.Models.Branch", null)
                         .WithMany("Customers")
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
+                        .HasForeignKey("BranchId");
                 });
 
             modelBuilder.Entity("BankingSystem.Models.Loan", b =>

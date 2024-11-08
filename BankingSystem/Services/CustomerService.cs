@@ -1,38 +1,51 @@
-﻿using BankingSystem.Models;
+﻿using BankingSystem.DTO;
+using BankingSystem.Models;
+using BankingSystem.Services;
 using BankingSystem.UnitOfWork;
 using System;
 
-
-public class CustomerService
+public class CustomerService : ICustomerService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IGenericService<Customer> _genericService;
 
-    public CustomerService(IUnitOfWork unitOfWork)
+
+    public CustomerService(IUnitOfWork unitOfWork, IGenericService<Customer> genericService)
     {
         _unitOfWork = unitOfWork;
+        _genericService = genericService;
     }
 
-    public async Task CreateCustomerAsync(string name, string email, string phoneNumber, string address)
+    public async Task AddCustomer(AddCustomerDTO addCustomerDTO)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Customer name is required.", nameof(name));
-
-        if (string.IsNullOrWhiteSpace(email))
-            throw new ArgumentException("Email is required.", nameof(email));
-
-        if (string.IsNullOrWhiteSpace(phoneNumber))
-            throw new ArgumentException("Phone number is required.", nameof(phoneNumber));
-
         var customer = new Customer
         {
-            CName = name,
-            Email = email,
-            PhoneNumber = phoneNumber,
-            Address = address
+            Name = addCustomerDTO.Name,
+            Email = addCustomerDTO.Email,
+            PhoneNumber = addCustomerDTO.PhoneNumber,
+            Address = addCustomerDTO.Address
         };
 
-        await _unitOfWork.Customers.AddAsync(customer);
-
-        await _unitOfWork.SaveChangesAsync();
+        _genericService.AddAsync(customer);
     }
+
+
+
+
+
+    //public async Task CreateCustomerAsync(string name, string email, string phoneNumber, string address)
+    //{
+
+    //    var customer = new Customer
+    //    {
+    //        Name = name,
+    //        Email = email,
+    //        PhoneNumber = phoneNumber,
+    //        Address = address
+    //    };
+
+    //    await _unitOfWork.Customers.AddAsync(customer);
+
+    //    await _unitOfWork.SaveChangesAsync();
+    //}
 }

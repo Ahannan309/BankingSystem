@@ -21,6 +21,10 @@ namespace BankingSystem.Services
             try
             {
                 await _repository.AddAsync(entity);
+
+                var a = await _unitOfWork.SaveAsync();
+               //var a = _unitOfWork.SaveAsync();
+               
             }
             catch (Exception ex)
             {

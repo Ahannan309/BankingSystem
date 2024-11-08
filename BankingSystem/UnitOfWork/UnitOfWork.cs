@@ -1,8 +1,6 @@
-﻿using System;
-using BankingSystem.Data;
+﻿using BankingSystem.Data;
 using BankingSystem.Interfaces;
 using BankingSystem.Repository;
-using Microsoft.EntityFrameworkCore;
 
 namespace BankingSystem.UnitOfWork
 {
@@ -41,10 +39,24 @@ namespace BankingSystem.UnitOfWork
 
 
 
-        public async Task<int> SaveChangesAsync()
+        public async Task<int> SaveAsync()
         {
-            return await _context.SaveChangesAsync();
+
+
+            await using (_context) // Dispose will be managed after SaveChangesAsync completes
+            {
+               return await _context.SaveChangesAsync();
+            }
+            //return await _context.SaveChangesAsync();
         }
+
+
+
+        //public int SaveAsync()
+        //{
+        //    return  _context.SaveChanges();
+        //}
+
 
         public void Dispose()
         {

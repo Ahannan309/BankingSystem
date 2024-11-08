@@ -6,7 +6,7 @@ namespace BankingSystem.DTO
     {
         [Required]
         [StringLength(100)]
-        public string CName { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [EmailAddress]

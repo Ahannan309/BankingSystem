@@ -9,24 +9,27 @@ namespace BankingSystem.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private readonly IGenericService<Customer> _genericService;
+        //private readonly IGenericService<Customer> _genericService;
+        private readonly ICustomerService _customerService;
 
-        public WeatherForecastController(IGenericService<Customer> genericservice)
+        public WeatherForecastController(ICustomerService customerService)
         {
-            _genericService = genericservice;
+            //_genericService = genericservice;
+            _customerService = customerService;
+
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateCustomer(AddCustomerDTO customerDTO)
         {
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
 
                 return BadRequest(ModelState);
             }
 
-            await _genericService.AddAsync(customerDTO);  
+            await _customerService.AddCustomer(customerDTO);
             return Ok("Customer Created Successfully");
         }
 
