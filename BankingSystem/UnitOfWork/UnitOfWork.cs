@@ -39,23 +39,23 @@ namespace BankingSystem.UnitOfWork
 
 
 
-        public async Task<int> SaveAsync()
-        {
-
-
-            await using (_context) // Dispose will be managed after SaveChangesAsync completes
-            {
-               return await _context.SaveChangesAsync();
-            }
-            //return await _context.SaveChangesAsync();
-        }
-
-
-
-        //public int SaveAsync()
+        //public async Task<int> SaveAsync()
         //{
-        //    return  _context.SaveChanges();
+
+
+        //    //await using (_context) // Dispose will be managed after SaveChangesAsync completes
+        //    //{
+        //    //   return await _context.SaveChangesAsync();
+        //    //}
+        //    return await _context.SaveChangesAsync();
         //}
+
+
+
+        public int SaveAsync()
+        {
+            return _context.SaveChanges();
+        }
 
 
         public void Dispose()

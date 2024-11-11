@@ -1,4 +1,5 @@
 ﻿using BankingSystem.DTO;
+using BankingSystem.Helper;
 using BankingSystem.Models;
 using BankingSystem.Services;
 using BankingSystem.UnitOfWork;
@@ -16,19 +17,41 @@ public class CustomerService : ICustomerService
         _genericService = genericService;
     }
 
-    public async Task AddCustomer(AddCustomerDTO addCustomerDTO)
+    public async Task<ResultMessage<Customer>> AddCustomer(AddCustomerDTO addCustomerDTO)
     {
+
+        var existingCustomer = await _unitOfWork.Customers.GetCustomerByEmailAsync(addCustomerDTO.Email);
+        if (existingCustomer != null) {
+            return new ResultMessage<Customer>
+            {
+                Success = false,
+                Message = MessageHelper.AlredyExists(existingCustomer.Email)
+            };
+        }
+
         var customer = new Customer
         {
             Name = addCustomerDTO.Name,
             Email = addCustomerDTO.Email,
             PhoneNumber = addCustomerDTO.PhoneNumber,
-            Address = addCustomerDTO.Address
+            Address = addCustomerDTO.Address    
         };
 
-        _genericService.AddAsync(customer);
+       return await _genericService.AddAsync(customer);
     }
 
+    public async Task<ResultMessage<Customer>> DeleteCustomerAsync(int id)
+    {
+        return await _genericService.DeleteAsync(id);
+    }
+
+    public async Task<ResultMessage<IEnumerable<Customer>>> GetAllCustomersAsync()
+    {
+       return await _genericService.GetAllAsync();    
+    }
+
+
+            
 
 
 

@@ -1,11 +1,13 @@
-﻿namespace BankingSystem.Services
+﻿using BankingSystem.Helper;
+
+namespace BankingSystem.Services
 {
     public interface IGenericService<T> where T : class
     {
-        Task<T> GetByIdAsync(int id);
-        Task<IEnumerable<T>> GetAllAsync();
-        Task AddAsync(T entity);
-        Task<T> UpdateAsync(T entity);
-        Task<T> DeleteAsync(int id);
+        Task<ResultMessage<T>> GetByIdAsync(int id);
+        Task<ResultMessage<IEnumerable<T>>> GetAllAsync();
+        Task<ResultMessage<T>> AddAsync(T entity);
+        Task<ResultMessage<T>> UpdateAsync(T entity);
+        Task<ResultMessage<T>> DeleteAsync(int id);
     }
 }

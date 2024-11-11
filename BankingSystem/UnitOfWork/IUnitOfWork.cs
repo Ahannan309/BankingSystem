@@ -13,8 +13,8 @@ namespace BankingSystem.UnitOfWork
         IBranchRepository Branches { get; }
         //object CustomerRepository { get; }
 
-        //int SaveAsync();
-        Task<int> SaveAsync();
+        int SaveAsync();
+        //Task<int> SaveAsync();
 
 
         //for generic service

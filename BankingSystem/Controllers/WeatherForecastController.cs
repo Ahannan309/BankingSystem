@@ -1,4 +1,5 @@
 using BankingSystem.DTO;
+using BankingSystem.Helper;
 using BankingSystem.Models;
 using BankingSystem.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -29,11 +30,72 @@ namespace BankingSystem.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _customerService.AddCustomer(customerDTO);
-            return Ok("Customer Created Successfully");
+            try
+            {
+                var result = await _customerService.AddCustomer(customerDTO);
+
+                if (!result.Success)
+                {
+                    return Conflict(result.Message);
+                }
+
+                return Ok(result.Message);
+
+
+            }
+            catch (Exception ex) { 
+                return StatusCode(500, MessageHelper.ErrorOccured(ex.Message));
+            
+            }
+
+
+
+            //return Ok("Customer Created Successfully");
         }
 
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllCustomers()
+        {
+
+            try
+            {
+                var result = await _customerService.GetAllCustomersAsync();
+                if (!result.Success)
+                {
+                    return NotFound(result.Message);
+                }
+
+                return Ok(result);
+            }
+            catch (Exception ex) {
+                return StatusCode(500, MessageHelper.ErrorOccured(ex.Message));
+            
+            }
+        }
+
+
+        [HttpDelete("delete/{id}")]
+
+        public async Task<IActionResult> DeleteCustomer(int id)
+        {
+            if(id <= 0)
+            {
+                return BadRequest("Invalid Id");
+            }
+
+            try
+            {
+                var result = await _customerService.DeleteCustomerAsync(id);
+                return Ok(result);
+            }
+            catch (Exception ex) {
+
+                return StatusCode(500, MessageHelper.ErrorOccured(ex.Message));
+            }
+
+
+        }
 
 
 

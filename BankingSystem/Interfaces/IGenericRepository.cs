@@ -10,6 +10,6 @@ namespace BankingSystem.Repository
         Task<IEnumerable<T>>  FindAsync (Expression<Func<T, bool>> predicate);
         Task  AddAsync(T entity);
         void Update(T entity);
-        void Remove(T entity);
-    }
+        Task Remove(T entity);
+    }   
 }

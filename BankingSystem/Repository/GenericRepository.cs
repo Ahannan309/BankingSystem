@@ -40,7 +40,7 @@ namespace BankingSystem.Repository
             return await _dbSet.FindAsync(id);
         }
 
-        public void Remove(T entity)
+        public async Task Remove(T entity)
         {
             _dbSet.Remove(entity);
         }
