@@ -7,7 +7,7 @@ namespace BankingSystem.Services
         Task<ResultMessage<T>> GetByIdAsync(int id);
         Task<ResultMessage<IEnumerable<T>>> GetAllAsync();
         Task<ResultMessage<T>> AddAsync(T entity);
-        Task<ResultMessage<T>> UpdateAsync(T entity);
+        Task<ResultMessage<T>> UpdateAsync(int id,T entity);
         Task<ResultMessage<T>> DeleteAsync(int id);
     }
 }

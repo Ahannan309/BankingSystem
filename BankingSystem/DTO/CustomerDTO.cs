@@ -2,7 +2,7 @@
 
 namespace BankingSystem.DTO
 {
-    public class AddCustomerDTO
+    public class CustomerDTO
     {
         [Required]
         [StringLength(100)]

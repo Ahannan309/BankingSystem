@@ -21,7 +21,7 @@ namespace BankingSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCustomer(AddCustomerDTO customerDTO)
+        public async Task<IActionResult> CreateCustomer(CustomerDTO customerDTO)
         {
 
             if (!ModelState.IsValid)
@@ -34,17 +34,17 @@ namespace BankingSystem.Controllers
             {
                 var result = await _customerService.AddCustomer(customerDTO);
 
-                if (!result.Success)
+                if (!result.Status)
                 {
-                    return Conflict(result.Message);
+                    return Conflict(result.Details);
                 }
 
-                return Ok(result.Message);
+                return Ok(result.Details);
 
 
             }
             catch (Exception ex) { 
-                return StatusCode(500, MessageHelper.ErrorOccured(ex.Message));
+                return StatusCode(500, MessageUtility.HandleCreationException(ex));
             
             }
 
@@ -54,48 +54,48 @@ namespace BankingSystem.Controllers
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllCustomers()
-        {
+        //[HttpGet]
+        //public async Task<IActionResult> GetAllCustomers()
+        //{
 
-            try
-            {
-                var result = await _customerService.GetAllCustomersAsync();
-                if (!result.Success)
-                {
-                    return NotFound(result.Message);
-                }
+        //    try
+        //    {
+        //        var result = await _customerService.GetAllCustomersAsync();
+        //        if (!result.Success)
+        //        {
+        //            return NotFound(result.Message);
+        //        }
 
-                return Ok(result);
-            }
-            catch (Exception ex) {
-                return StatusCode(500, MessageHelper.ErrorOccured(ex.Message));
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex) {
+        //        return StatusCode(500, MessageHelper.ErrorOccured(ex.Message));
             
-            }
-        }
+        //    }
+        //}
 
 
-        [HttpDelete("delete/{id}")]
+        //[HttpDelete("delete/{id}")]
 
-        public async Task<IActionResult> DeleteCustomer(int id)
-        {
-            if(id <= 0)
-            {
-                return BadRequest("Invalid Id");
-            }
+        //public async Task<IActionResult> DeleteCustomer(int id)
+        //{
+        //    if(id <= 0)
+        //    {
+        //        return BadRequest("Invalid Id");
+        //    }
 
-            try
-            {
-                var result = await _customerService.DeleteCustomerAsync(id);
-                return Ok(result);
-            }
-            catch (Exception ex) {
+        //    try
+        //    {
+        //        var result = await _customerService.DeleteCustomerAsync(id);
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex) {
 
-                return StatusCode(500, MessageHelper.ErrorOccured(ex.Message));
-            }
+        //        return StatusCode(500, MessageHelper.ErrorOccured(ex.Message));
+        //    }
 
 
-        }
+        //}
 
 
 

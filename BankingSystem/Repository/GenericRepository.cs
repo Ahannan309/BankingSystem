@@ -45,9 +45,9 @@ namespace BankingSystem.Repository
             _dbSet.Remove(entity);
         }
 
-        public void Update(T entity)
+        public async Task Update(T entity)
         {
-            _dbSet.Update(entity);
+             _dbSet.Update(entity);
         }
     }
 }

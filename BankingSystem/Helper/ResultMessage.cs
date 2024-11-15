@@ -2,10 +2,10 @@
 {
     public class ResultMessage<T>
     {
-        public bool Success { get; set; }
-        public string Message { get; set; }
+        public bool Status { get; set; }
 
-        public T Data { get; set; }
+        public string Details { get; set; }
+        public T Content { get; set; }
 
     }
 }

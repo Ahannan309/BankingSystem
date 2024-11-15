@@ -9,7 +9,7 @@ namespace BankingSystem.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IGenericRepository<T> _repository;
-        //private readonly 
+       
 
         public GenericService(IUnitOfWork unitOfWork)
         {
@@ -29,9 +29,9 @@ namespace BankingSystem.Services
 
                 return new ResultMessage<T>
                 {
-                    Success = true,
-                    Message = MessageHelper.Success(typeof(T).Name, "Added"),
-                    Data = entity
+                    Status = true,
+                    Details = MessageUtility.HandleCreationSuccess(),
+                    Content = entity
                 };
 
             }
@@ -39,9 +39,9 @@ namespace BankingSystem.Services
             {
                 return new ResultMessage<T>
                 {
-                    Success = false,
-                    Message = MessageHelper.Exception(typeof(T).Name, "Adding", ex.Message),
-                    Data = entity
+                    Status = false,
+                    Details = MessageUtility.HandleCreationException(ex),
+                    Content = entity
                 };
             }
 
@@ -57,25 +57,26 @@ namespace BankingSystem.Services
                 {
                     return new ResultMessage<T>
                     {
-                        Success = false,
-                        Message = MessageHelper.NotFound(typeof(T).Name)
+                        Status = false,
+                        Details = MessageUtility.HandleNotFound(MessageUtility.Deletion)
                     };
                 }
                 await _repository.Remove(entity);
                 _unitOfWork.SaveAsync();
                 return new ResultMessage<T>
                 {
-                    Success = true,
-                    Message = MessageHelper.Success(typeof(T).Name, "Deleted"),
-                    Data = entity
+                    Status = true,
+                    Details = MessageUtility.HandleDeletionSuccess(),
+                    Content = entity
                 };
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
 
                 return new ResultMessage<T>
                 {
-                    Success = false,
-                    Message = MessageHelper.Exception(typeof(T).Name, "deleting", ex.Message)
+                    Status = false,
+                    Details = MessageUtility.HandleDeletionException(ex)
                 };
             }
         }
@@ -90,16 +91,16 @@ namespace BankingSystem.Services
                 {
                     return new ResultMessage<IEnumerable<T>>()
                     {
-                        Success = false,
-                        Message = MessageHelper.NotFound(typeof(T).Name)
+                        Status = false,
+                        Details = MessageUtility.HandleNotFound(MessageUtility.Fetching)
                     };
                 }
 
                 return new ResultMessage<IEnumerable<T>>()
                 {
-                    Success = true,
-                    Message = MessageHelper.Success(typeof(T).Name, "fetched"),
-                    Data = result
+                    Status = true,
+                    Details = MessageUtility.HandleFetchSuccess(),
+                    Content = result
 
                 };
             }
@@ -108,8 +109,8 @@ namespace BankingSystem.Services
 
                 return new ResultMessage<IEnumerable<T>>()
                 {
-                    Success = false,
-                    Message = MessageHelper.Exception(typeof(T).Name, "fetching", ex.Message)
+                    Status = false,
+                    Details = MessageUtility.HandleFetchException(ex)
                 };
             }
         }
@@ -119,13 +120,71 @@ namespace BankingSystem.Services
 
         public async Task<ResultMessage<T>> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+
+            try
+            {
+                var result = await _repository.GetByIdAsync(id);
+                if (result == null)
+                {
+                    return new ResultMessage<T>()
+                    {
+                        Status = false,
+                        Details = MessageUtility.HandleNotFound(MessageUtility.Fetching)
+                    };
+                }
+                return new ResultMessage<T>()
+                {
+                    Status = true,
+                    Details = MessageUtility.HandleFetchSuccess(),
+                    Content = result
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ResultMessage<T>
+                {
+                    Status = false,
+                    Details = MessageUtility.HandleFetchException(ex)
+                };
+            }
         }
 
-        public Task<ResultMessage<T>> UpdateAsync(T entity)
+        public async Task<ResultMessage<T>> UpdateAsync(int id, T entity)
         {
-            throw new NotImplementedException();
-        }
-    }
 
+            try
+            {
+
+                var entityData = await _repository.GetByIdAsync(id);
+                if (entityData == null)
+                {
+                    return new ResultMessage<T>()
+                    {
+                        Status = false,
+                        Details = MessageUtility.HandleNotFound(MessageUtility.Fetching)
+                    };
+
+                }
+
+                await _repository.Update(entity);
+                _unitOfWork.SaveAsync();
+                return new ResultMessage<T>()
+                {
+                    Status = true,
+                    Details = MessageUtility.HandleFetchSuccess(),
+                    Content = entity
+                };
+            }
+            catch (Exception ex) {
+                return new ResultMessage<T>()
+                {
+                    Status = false,
+                    Details = MessageUtility.HandleUpdateException(ex)
+                };
+            }
+            }
+
+
+
+    }   
 }
